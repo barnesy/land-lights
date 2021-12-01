@@ -1,0 +1,22 @@
+{
+  "name": "impact-report",
+  "private": true,
+  "scripts": {
+    "develop": "gridsome develop",
+    "explore": "gridsome explore",
+    "build": "gridsome build",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@gas-digital/components": "^0.2.8",
+    "fs": "^0.0.1-security",
+    "gh-pages": "^3.2.3",
+    "gridsome": "^0.7.0",
+    "node-sass": "^6.0.1",
+    "sass-loader": "^10.1.1",
+    "socket.io": "^4.4.0",
+    "socket.io-client": "^4.4.0",
+    "vue-socket.io": "^3.0.10"
+  }
+}
