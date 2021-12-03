@@ -1,58 +1,46 @@
 <template>
-  <Directory
+  <PageSection
     class="dark"
-    bgImage="url('https://www.fueluponthis.com/assets/img/patterns/dark-teal.svg')"
+    bgColor="var(--red)"
+    bgImage="url('/img/bg.jpg')"
   >
-    <template #page-header>
-      <Header class="v2">
-        <template>
-          HeartbeatATL
-        </template>
-        <template #support>
-          <p class="dark">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam enim
-            consequatur iusto assumenda unde, perferendis fugiat porro
-            excepturi, ut est praesentium quo sequi hic veritatis similique.
-            Deserunt dolorum delectus nulla!
-            <br/>
-            <button v-on:click="askForLocation">Send Location</button>
-          </p>
-        </template>
-      </Header>
-    </template>
+    <Header class="v2">
+      <template>
+        HeartbeatATL
 
-    <PageSection class="narrow">
-      <template #title>
-        Project Statement
+        <g-image v-on:click="askForLocation" class="heart" src="/img/heart.png" width="150" height="150" />
       </template>
-
       <template #support>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus
-          consequuntur sit odio, sed autem expedita magnam aut facilis minus.
-          Optio expedita totam repellat nulla doloribus atque provident neque
-          mollitia fuga?
-        </p>
-        <a href="/project-info">Read more</a>
+        {{location.lat + "  " + location.lon}}
       </template>
-    </PageSection>
-  </Directory>
+
+    </Header>
+
+  </PageSection>
 </template>
 
 <script>
 
   export default {
     name: "Index",
+    data() {
+      return {
+        location: {
+          lat: null,
+          lon: null
+        }
+      }
+    },
     methods : {
       askForLocation() {
         var startPos;
+        console.log(this.location.lat);
+        var t = this;
 
         var geoSuccess = function(position) {
-          // Do magic with location
           startPos = position;
-          console.log(startPos);
-          document.getElementById('startLat').innerHTML = startPos.coords.latitude;
-          document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+          t.location.lat = startPos.coords.latitude;
+          t.location.lon = startPos.coords.longitude;
         };
 
         var geoError = function(error) {
@@ -70,3 +58,19 @@
 
 </script>
 
+<style lang="scss">
+.page-section {
+  min-height: 90rem;
+}
+
+.v2 .header .support {
+  text-align: center;
+}
+
+.heart {
+  margin: 0 auto;
+  height: 24rem;
+  width: 24rem;
+  cursor: pointer;
+}
+</style>

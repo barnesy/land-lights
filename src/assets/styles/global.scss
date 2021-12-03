@@ -1,0 +1,32 @@
+@import "./fonts.scss";
+@import "./variables.scss";
+
+body {
+  font-family: Helvetica, serif;
+}
+
+.label {
+  font-family: Helvetica;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-family: Provicali, serif;
+}
+
+h1 {
+  font-family: Provicali, sans-serif;
+}
+
+h2 {
+  font-family: Provicali;
+}
+
+h4 {
+  font-family: Provicali, serif;
+}
+blockquote {
+  font-family: Provicali, sans-serif;
+}

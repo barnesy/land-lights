@@ -1,4 +1,5 @@
 import '../../component-library/lib/assets/styles/global.scss';
+import './assets/styles/global.scss';
 
 import NavList from "./components/NavList";
 import Logo from "./components/Logo";
@@ -43,11 +44,3 @@ export default function(Vue, { router, head, isClient }) {
   Vue.component('PageSection', PageSection);
   Vue.component('Footer', Footer);
 }
-
-import Vue from 'vue';
-import socketio from 'socket.io';
-import VueSocketIO from 'vue-socket.io';
-
-export const SocketInstance = socketio('http://localhost:4113');
-
-Vue.use(VueSocketIO, SocketInstance)
