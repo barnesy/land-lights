@@ -1,4 +1,5 @@
 *.log
+*.swp
 .cache
 .DS_Store
 src/.temp
