@@ -6,5 +6,5 @@
 
 module.exports = {
   siteName: 'HeartbeatATL',
-  siteUrl: 'https://heartbeatatl.ship.computer'
+  siteUrl: 'https://heartbeatatl.com'
 }
