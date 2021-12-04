@@ -2,13 +2,13 @@
   <PageSection
     class="dark"
     bgColor="var(--red)"
-    bgImage="url('/img/bg.jpg')"
+    :bgImage="`url('${bgImageURL}')`"
   >
     <Header class="v2">
       <template>
         HeartbeatATL
 
-        <g-image v-on:click="askForLocation" class="heart" src="/img/heart.png" width="150" height="150" />
+        <img v-on:click="askForLocation" class="heart" src="~/assets/img/heart.png" width="150" height="150" />
       </template>
       <template #support>
         {{location.lat + "  " + location.lon}}
@@ -20,11 +20,19 @@
 </template>
 
 <script>
+import Header from '@gas-digital/components/lib/Header.vue';
+import PageSection from '@gas-digital/components/lib/PageSection.vue';
+import bgImageURL from '~/assets/img/bg.jpg';
 
   export default {
     name: "Index",
+    components: {
+      Header,
+      PageSection
+    },
     data() {
       return {
+        bgImageURL,
         location: {
           lat: null,
           lon: null
