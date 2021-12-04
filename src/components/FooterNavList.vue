@@ -1,5 +1,0 @@
-<template>
-  <ul>
-
-  </ul>
-</template>
