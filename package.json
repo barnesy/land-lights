@@ -2,10 +2,9 @@
   "name": "land-lights",
   "private": true,
   "scripts": {
-    "develop": "gridsome develop",
-    "explore": "gridsome explore",
-    "build": "gridsome build",
-    "predeploy": "yarn run build",
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "node .output/server/index.mjs",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
@@ -16,5 +15,7 @@
     "node-sass": "^6.0.1",
     "sass-loader": "^10.1.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nuxt3": "latest"
+  }
 }
