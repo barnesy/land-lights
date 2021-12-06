@@ -7,10 +7,10 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
-    "node-sass": "^6.0.1",
-    "sass-loader": "^10.1.1"
   },
   "devDependencies": {
-    "nuxt3": "latest"
+    "nuxt3": "latest",
+    "sass": "^1.44.0",
+    "sass-loader": "^12.3.0"
   }
 }
