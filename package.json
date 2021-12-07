@@ -1,20 +1,16 @@
 {
-  "name": "impact-report",
+  "name": "land-lights",
   "private": true,
   "scripts": {
-    "develop": "gridsome develop",
-    "explore": "gridsome explore",
-    "build": "gridsome build",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d dist"
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
-    "@gas-digital/components": "^0.2.8",
-    "core-js": "^3.19.2",
-    "gh-pages": "^3.2.3",
-    "gridsome": "^0.7.0",
-    "node-sass": "^6.0.1",
-    "sass-loader": "^10.1.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nuxt3": "latest",
+    "sass": "^1.44.0",
+    "sass-loader": "^12.3.0"
+  }
 }
