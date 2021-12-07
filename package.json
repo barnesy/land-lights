@@ -11,6 +11,8 @@
   "devDependencies": {
     "nuxt3": "latest",
     "sass": "^1.44.0",
-    "sass-loader": "^12.3.0"
+    "sass-loader": "^12.3.0",
+    "socket.io": "^4.4.0",
+    "socket.io-client": "^4.4.0"
   }
 }
