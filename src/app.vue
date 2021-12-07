@@ -1,45 +1,56 @@
 <template>
   <section class="section">
     <h1>HeartbeatATL</h1>
-    <img @click="askForLocation" class="heart" src="~/assets/img/heart.png"/>
-    <div>
-      {{location.lat + "  " + location.lon}}
-    </div>
+    <img @click="start" class="heart" src="~/assets/img/heart.png"/>
+    <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre>
+    <pre v-if="error">{{ error.message }}</pre>
   </section>
 </template>
 
 <script>
+import { io } from 'socket.io-client'
+import { onMounted, onUnmounted, ref } from 'vue'
+import { GeoObserver } from './geo-observer.js'
+import { prettify } from './prettify.js'
+
 export default {
-  data() {
-    return {
-      location: {
-        lat: null,
-        lon: null
-      }
+  setup() {
+
+    let socket
+    const startSocket = () => {
+      socket = io();
+      socket.on('connect', () => {
+        console.debug(`Socket connected (${socket.id})`)
+      });
+      socket.on('connect_error', console.error)
+      socket.on('disconnect', () => {
+        console.debug('Socket disconnected')
+      });
+      socket.on('pong', (_position) => {
+        console.debug(`Socket received 'pong' (${socket.id})\n${prettify(_position)}`)
+        position.value = _position
+      })
     }
-  },
-  methods : {
-    askForLocation() {
-      var startPos;
-      console.log(this.location.lat);
-      var t = this;
+    onMounted(startSocket)
 
-      var geoSuccess = function(position) {
-        startPos = position;
-        t.location.lat = startPos.coords.latitude;
-        t.location.lon = startPos.coords.longitude;
-      };
+    const stopSocket = () => socket.disconnect()
+    onUnmounted(stopSocket)
 
-      var geoError = function(error) {
-        switch(error.code) {
-          case error.TIMEOUT:
-            console.log(error);
-            break;
-        }
-      };
 
-      navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+    const position = ref(null)
+    const error = ref(null)
+    const update = (_position, _error) => {
+      if (!_error)
+        socket.emit('ping', _position)
+      else
+        console.error(_error)
     }
+    const observer = new GeoObserver(update)
+    const start = () => observer.simulate()
+    const stop = () => observer.disconnect()
+    onUnmounted(stop)
+
+    return { error, position, start }
   }
 };
 
