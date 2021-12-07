@@ -8,7 +8,6 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@gas-digital/components": "^0.2.8",
     "core-js": "^3.19.2",
     "gh-pages": "^3.2.3",
     "gridsome": "^0.7.0",

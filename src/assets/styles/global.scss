@@ -1,32 +1,48 @@
 @import "./fonts.scss";
 @import "./variables.scss";
 
-body {
+body, .label {
   font-family: Helvetica, serif;
 }
 
-.label {
-  font-family: Helvetica;
+body {
+  font-size: 1.6rem;
+  margin: 0;
 }
 
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6, blockquote {
   font-family: Provicali, serif;
 }
 
 h1 {
-  font-family: Provicali, sans-serif;
+  line-height: 108%;
+  font-size: 5rem;
+  letter-spacing: 1px;
 }
 
 h2 {
-  font-family: Provicali;
+  font-size: 5rem;
+  margin-bottom: 0;
+}
+
+h3 {
+  font-size: 2rem;
 }
 
 h4 {
-  font-family: Provicali, serif;
+  font-size: 2rem;
+  letter-spacing: 0.1px;
+  margin-bottom: 0rem;
 }
-blockquote {
-  font-family: Provicali, sans-serif;
+
+h5 {
+  font-size: 1.6rem;
+}
+
+h6 {
+  font-size: 1.2rem;
+}
+
+html {
+  font-size: 10px;
 }
