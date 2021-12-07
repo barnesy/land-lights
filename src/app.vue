@@ -8,20 +8,45 @@
 </template>
 
 <script>
-import { onUnmounted, ref } from 'vue'
+import { io } from 'socket.io-client'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { GeoObserver } from './geo-observer.js'
+import { prettify } from './prettify.js'
 
 export default {
   setup() {
+
+    let socket
+    const startSocket = () => {
+      socket = io();
+      socket.on('connect', () => {
+        console.debug(`Socket connected (${socket.id})`)
+      });
+      socket.on('connect_error', console.error)
+      socket.on('disconnect', () => {
+        console.debug('Socket disconnected')
+      });
+      socket.on('pong', (_position) => {
+        console.debug(`Socket received 'pong' (${socket.id})\n${prettify(_position)}`)
+        position.value = _position
+      })
+    }
+    onMounted(startSocket)
+
+    const stopSocket = () => socket.disconnect()
+    onUnmounted(stopSocket)
+
+
     const position = ref(null)
     const error = ref(null)
     const update = (_position, _error) => {
-      position.value = _position
-      error.value = _error
-      if (_error) console.error(_error)
+      if (!_error)
+        socket.emit('ping', _position)
+      else
+        console.error(_error)
     }
     const observer = new GeoObserver(update)
-    const start = () => observer.observe()
+    const start = () => observer.simulate()
     const stop = () => observer.disconnect()
     onUnmounted(stop)
 
