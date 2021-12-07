@@ -4,12 +4,10 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "start": "node .output/server/index.mjs",
-    "deploy": "gh-pages -d dist"
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "core-js": "^3.19.2",
-    "gh-pages": "^3.2.3",
     "gridsome": "^0.7.0",
     "node-sass": "^6.0.1",
     "sass-loader": "^10.1.1"
