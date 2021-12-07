@@ -18,6 +18,17 @@ class GeoObserver {
 
     this.watchID = navigator.geolocation.watchPosition(success, failure, this.options)
   }
+
+  simulate() {
+    const position = {
+      coords: {
+        latitude: Math.random(),
+        longitude: Math.random()
+      },
+      timestamp: Date.now()
+    }
+    this.callback(position, null)
+  }
 }
 
 export { GeoObserver }
