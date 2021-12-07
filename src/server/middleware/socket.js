@@ -15,7 +15,7 @@ export default async (req, res) => {
 
     socket.on('ping', (data) => {
       console.log(`Socket received 'ping' (${socket.id})\n${prettify(data)}`)
-      socket.emit('pong', data)
+      io.sockets.emit('pong', data)
     })
 
     socket.on('disconnect', (socket) =>
