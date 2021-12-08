@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "start": "node .output/server/index.mjs"
+    "start": "HOST=0.0.0.0 node .output/server/index.mjs"
   },
   "dependencies": {
   },
