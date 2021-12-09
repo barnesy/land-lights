@@ -10,6 +10,7 @@
 <script>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { GeoObserver } from './geo-observer.js'
+import { clonePosition }from './clone-position.js'
 import { prettify } from './prettify.js'
 
 export default {
@@ -46,9 +47,10 @@ export default {
 
 
     const update = (position, _error) => {
-      if (!_error)
+      if (!_error) {
+        position = clonePosition(position) // fix stringify
         socket.send(JSON.stringify({ position }))
-      else {
+      } else {
         error.value = _error
         console.error(_error)
       }
