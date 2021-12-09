@@ -45,11 +45,13 @@ export default {
     onUnmounted(stopSocket)
 
 
-    const update = (position, error) => {
-      if (!error)
+    const update = (position, _error) => {
+      if (!_error)
         socket.send(JSON.stringify({ position }))
-      else
-        console.error(error)
+      else {
+        error.value = _error
+        console.error(_error)
+      }
     }
     const observer = new GeoObserver(update)
     const start = () => observer.simulate()
