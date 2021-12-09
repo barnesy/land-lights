@@ -54,7 +54,7 @@ export default {
       }
     }
     const observer = new GeoObserver(update)
-    const start = () => observer.simulate()
+    const start = () => observer.observe()
     const stop = () => observer.disconnect()
     onUnmounted(stop)
 
