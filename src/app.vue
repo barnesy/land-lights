@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import { io } from 'socket.io-client'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { GeoObserver } from './geo-observer.js'
 import { prettify } from './prettify.js'
@@ -16,34 +15,41 @@ import { prettify } from './prettify.js'
 export default {
   setup() {
 
+    const position = ref(null)
+    const error = ref(null)
+
     let socket
     const startSocket = () => {
-      socket = io();
-      socket.on('connect', () => {
-        console.debug(`Socket connected (${socket.id})`)
-      });
-      socket.on('connect_error', console.error)
-      socket.on('disconnect', () => {
+      console.debug(`Opening socket...`)
+      socket = new WebSocket(`ws://${window.location.hostname}:3001/ws`);
+      socket.onopen = () => {
+        console.debug(`Socket connected`)
+        const data = { message: 'Hello from client' }
+        socket.send(JSON.stringify(data))
+      }
+      socket.onerror = console.error
+      socket.onclose = () => {
         console.debug('Socket disconnected')
-      });
-      socket.on('pong', (_position) => {
-        console.debug(`Socket received 'pong' (${socket.id})\n${prettify(_position)}`)
-        position.value = _position
-      })
+      }
+      socket.onmessage = ({ data }) => {
+        data = JSON.parse(data)
+        console.debug(`Socket received:\n${prettify(data)}`)
+        if ('position' in data) {
+          position.value = data.position
+        }
+      }
     }
     onMounted(startSocket)
 
-    const stopSocket = () => socket.disconnect()
+    const stopSocket = () => socket.close(1001)
     onUnmounted(stopSocket)
 
 
-    const position = ref(null)
-    const error = ref(null)
-    const update = (_position, _error) => {
-      if (!_error)
-        socket.emit('ping', _position)
+    const update = (position, error) => {
+      if (!error)
+        socket.send(JSON.stringify({ position }))
       else
-        console.error(_error)
+        console.error(error)
     }
     const observer = new GeoObserver(update)
     const start = () => observer.simulate()

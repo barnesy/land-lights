@@ -8,13 +8,10 @@
     "ssh": "ssh -i land-lights.pem -l ec2-user \"$(terraform -chdir=infra output -raw ec2-domain)\"",
     "start": "HOST=0.0.0.0 node .output/server/index.mjs"
   },
-  "dependencies": {
-  },
   "devDependencies": {
     "nuxt3": "latest",
     "sass": "^1.44.0",
     "sass-loader": "^12.3.0",
-    "socket.io": "^4.4.0",
-    "socket.io-client": "^4.4.0"
+    "ws": "^8.3.0"
   }
 }
