@@ -13,6 +13,13 @@ import { GeoObserver } from './geo-observer.js'
 import { clonePosition }from './clone-position.js'
 import { prettify } from './prettify.js'
 
+function buildSocketURL(location) {
+  const url = new URL('/ws', location)
+  url.protocol = url.protocol.replace('http', 'ws')
+  url.port = url.port.replace('3000', '3001')
+  return url
+}
+
 export default {
   setup() {
 
@@ -22,7 +29,8 @@ export default {
     let socket
     const startSocket = () => {
       console.debug(`Opening socket...`)
-      socket = new WebSocket(`ws://${window.location.hostname}:3001/ws`);
+      const url = buildSocketURL(window.location)
+      socket = new WebSocket(url)
       socket.onopen = () => {
         console.debug(`Socket connected`)
         const data = { message: 'Hello from client' }
