@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
+    "keygen": "ssh-keygen -t ed25519 -f land-lights.pem -N '' && chmod 400 land-lights.pem*",
     "start": "HOST=0.0.0.0 node .output/server/index.mjs"
   },
   "dependencies": {

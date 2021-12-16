@@ -1,4 +1,6 @@
 *.log
+*.pem
+*.pem.pub
 *.swp
 *.tfstate
 *.tfstate.backup
