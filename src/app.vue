@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <h1>Heartbeat_ATL</h1>
-    <img @click="start" class="heart" src="~/assets/img/heart.png"/>
+    <img @click="start" class="heart shimmer" src="~/assets/img/heart.png"/>
     <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre>
     <pre v-if="error">{{ error.message }}</pre> -->
 
@@ -71,7 +71,7 @@ body {
   align-items: center;
   background-color: #EC1C24;
   background-image: url('./assets/img/bg.jpg');
-  background-position: center;
+  background-position: bottom;
   background-size: cover;
   box-sizing: border-box;
   color: white;
@@ -83,7 +83,6 @@ body {
   justify-content: center;
   align-items: center;
   padding: 3rem;
-
 
   .links {
     display: flex;
@@ -102,6 +101,21 @@ body {
   height: 34rem;
   width: 34rem;
   margin: 0 auto;
+  transition: ease-in-out 150ms;
+}
+
+.heart:hover {
+  // transform: scale(1.05);
+}
+
+.shimmer {
+  -webkit-mask:linear-gradient(-60deg,#000 30%,#0005,#000 70%) right/300% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 2.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {-webkit-mask-position:left}
 }
 
 @media (max-width: 800px) {
