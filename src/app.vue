@@ -1,9 +1,14 @@
 <template>
   <section class="section">
-    <h1>HeartbeatATL</h1>
-    <img @click="start" class="heart" src="~/assets/img/heart.png"/>
-    <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre>
-    <pre v-if="error">{{ error.message }}</pre>
+    <h1>Heartbeat_ATL</h1>
+    <img @click="start" class="heart shimmer" src="~/assets/img/heart.png"/>
+    <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre>
+    <pre v-if="error">{{ error.message }}</pre> -->
+
+    <p class="links">
+      <a href="https://goo.gl/maps/9mYazaiXJWCuJVSW6">@Centenial Yards</a>
+      <a href="https://www.instagram.com/heartbeat_atl">#heartbeatatl</a>
+    </p>
   </section>
 </template>
 
@@ -76,26 +81,74 @@ export default {
 
 <style lang="scss">
 
+body {
+  background-color: #cc6f26;
+}
+
 .section {
   align-items: center;
   background-color: #EC1C24;
   background-image: url('./assets/img/bg.jpg');
-  background-position: center;
+  background-position: bottom;
   background-size: cover;
   box-sizing: border-box;
   color: white;
   display: flex;
   flex-direction: column;
-  min-height: 90rem;
-  padding: 3rem 3rem 10rem;
+  min-height: 80rem;
+  padding: 3rem;
   width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+
+  .links {
+    display: flex;
+
+    a {
+      display: block;
+      margin: 0 1rem;
+      color: white;
+      text-decoration: none;
+    }
+  }
 }
 
 .heart {
   cursor: pointer;
-  height: 24rem;
+  height: 34rem;
+  width: 34rem;
   margin: 0 auto;
-  width: 24rem;
+  transition: ease-in-out 150ms;
+}
+
+.heart:hover {
+  // transform: scale(1.05);
+}
+
+.shimmer {
+  -webkit-mask:linear-gradient(-60deg,#000 30%,#0005,#000 70%) right/300% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 2.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {-webkit-mask-position:left}
+}
+
+@media (max-width: 800px) {
+  h1 {
+    font-size: 2.4rem;
+  }
+
+  .heart {
+    height: 28rem;
+    width: 28rem;
+  }
+
+  .section {
+    min-height: 60rem;
+  }
 }
 
 </style>
