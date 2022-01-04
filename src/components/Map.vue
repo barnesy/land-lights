@@ -15,17 +15,15 @@
     data () {
       return {
         map: null,
-        markers: null,
+        markers: [],
         center: [-84.3957530, 33.7550732]
       }
     },
     mounted(){
-      const bounds = [
+      const maxBounds = [
         [-84.5251117, 33.6035027], // Southwest coordinates
         [-84.2002905, 33.9140176], // Northeast coordinates
       ]
-
-      this.markers = []
 
       this.map = new mapboxgl.Map({
         accessToken: 'pk.eyJ1IjoiaWFtYmFybmVzeSIsImEiOiJja3h5dWY1MnkxZDNoMnhyczBjMWtmYWlpIn0.HdQChTFbneRhxHz3JtGEnw',
@@ -35,29 +33,44 @@
         zoom: 16,
         pitch: 0,
         maxZoom: 17,
-        maxBounds: bounds,
+        // maxBounds: maxBounds,
       })
       this.addMarker(this.center)
       console.log('mounted');
     },
     methods:{
-      addMarker(latlng, fly=false){
+      updateMarkers(users, bounds){
+        for (var i = this.markers.length - 1; i >= 0; i--) {
+          this.markers[i].remove();
+        }
+
+        this.addMarker(this.center)
+
+        for (var i = users.length - 1; i >= 0; i--){
+          this.addMarker(Object.values(users[i].lnglat), true)
+        }
+
+        if(bounds){
+          this.map.fitBounds(bounds, {
+            padding: 50
+          });
+        }
+      },
+      addMarker(lnglat, withLine=false){
         var img = document.createElement('img')
         img.src = heartImagePath
         img.className = "heart marker shimmer"
 
-        var marker = new mapboxgl.Marker({element: img}).setLngLat(latlng).addTo(this.map)
+        console.log('new marker')
+        console.log(Object.values(lnglat))
+
+        var marker = new mapboxgl.Marker({element: img}).setLngLat(lnglat).addTo(this.map)
+
         this.markers.push(marker)
 
-        if(fly){
-          this.map.fitBounds([
-            [this.center[0], this.center[1]], // southwestern corner of the bounds
-            latlng // northeastern corner of the bounds
-          ]);
-
-          this.addLine(this.center, latlng)
+        if(withLine){
+          this.addLine(this.center, lnglat)
         }
-        console.log('adding marker')
       },
       addLine(start, end){
         this.map.addSource('route', {
