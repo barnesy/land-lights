@@ -178,6 +178,7 @@ body {
 
 .heart-shaped-box {
   cursor: pointer;
+  overflow: hidden;
 }
 
 .heart {
@@ -190,7 +191,7 @@ body {
 }
 
 .enlarged {
-  transform: scale(1.3);
+  transform: scale(1.1);
   transition: all 400ms cubic-bezier(.47,1.64,.41,.8);
 }
 
