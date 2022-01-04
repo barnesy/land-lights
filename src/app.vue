@@ -2,7 +2,9 @@
 
   <section class="section">
     <div id="logo" class="shimmer-color"><img src="~/assets/img/heartbeat-logo.png" /></div>
-    <img @click="this.observer.observe()" id="heart" class="heart shimmer" src="~/assets/img/heart.png"/>
+    <div class="">
+      <img @touchend="this.observer.observe()" id="heart" class="heart shimmer" src="~/assets/img/heart.png"/>
+    </div>
     <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre> -->
     <pre v-if="error">{{ error.message }}</pre>
 
@@ -53,9 +55,8 @@ export default {
     }
   },
   methods: {
-    addMarkerToMap(lnglat){
-      console.log(lnglat)
-      this.$refs.map.addMarker(lnglat, true);
+    updateMap(users, bounds){
+      this.$refs.map.updateMarkers(users, bounds)
     },
     update(_position, _error) {
       console.log('on update')
@@ -65,6 +66,7 @@ export default {
         console.log(this.position)
         let position = clonePosition(_position) // fix stringify
         this.socket.send(JSON.stringify({ position }))
+        this.observer.disconnect()
       } else {
         error.value = _error
         console.error(_error)
@@ -96,13 +98,11 @@ export default {
     }
 
     this.socket.onmessage = ({ data }) => {
-      console.log('on message')
       data = JSON.parse(data)
-      console.log(data)
 
       console.debug(`Socket received:\n${prettify(data)}`)
-      if ('position' in data) {
-        this.addMarkerToMap([data.position.coords.longitude, data.position.coords.latitude])
+      if ('users' in data) {
+        this.updateMap(data.users, data.bounds)
 
         window.scrollTo(0,document.body.scrollHeight)
       }
