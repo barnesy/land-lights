@@ -1,14 +1,13 @@
 <template>
 
   <section class="section">
-    <h1>Heartbeat_ATL</h1>
+    <h1 class="shimmer-color">Heartbeat_ATL</h1>
     <img @click="this.observer.observe()" id="heart" class="heart shimmer" src="~/assets/img/heart.png"/>
     <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre> -->
     <pre v-if="error">{{ error.message }}</pre>
 
     <p class="links">
-      <a href="https://goo.gl/maps/9mYazaiXJWCuJVSW6">@Centenial Yards</a>
-      <a href="https://www.instagram.com/heartbeat_atl">#heartbeatatl</a>
+      <a href="https://goo.gl/maps/9mYazaiXJWCuJVSW6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
     </p>
   </section>
   <section>
@@ -127,6 +126,7 @@ export default {
 
 body {
   background-color: #5D3E6F;
+  color: white;
 }
 
 .section {
@@ -155,6 +155,10 @@ body {
       margin: 0 1rem;
       color: white;
       text-decoration: none;
+
+      img {
+        max-width: 20rem;
+      }
     }
   }
 }
@@ -174,13 +178,29 @@ body {
   animation: shimmer 2.5s infinite;
 }
 
+.shimmer-color {
+  -webkit-mask:linear-gradient(-60deg,rgb(241, 241, 241) 30%,rgba(40, 60, 236, 0.333),rgb(248, 22, 180) 70%) right/300% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 5s infinite;
+}
+
 @keyframes shimmer {
   100% {-webkit-mask-position:left}
 }
 
 @media (max-width: 800px) {
   h1 {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
+    color: pink;
+    line-height: 2;
+    padding: 0;
+    margin: 0;
+    height: 6rem;
+  }
+
+  a, p, h1 {
+    color: white;
+    border: none;
   }
 
   .heart {
