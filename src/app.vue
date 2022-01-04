@@ -63,18 +63,18 @@ export default {
     updateMap(users, bounds){
       this.$refs.map.updateMarkers(users, bounds)
     },
-    update(_position, _error) {
+    update(position, error) {
       console.log('on update')
-      this.position = _position
 
-      if (!_error) {
-        console.log(this.position)
-        let position = clonePosition(_position) // fix stringify
+      if (!error) {
+        console.log(position)
+        position = clonePosition(position) // fix stringify
+        this.position = position
         this.socket.send(JSON.stringify({ position }))
         this.observer.disconnect()
       } else {
-        error.value = _error
-        console.error(_error)
+        console.error(error)
+        this.error = error
       }
     }
   },
