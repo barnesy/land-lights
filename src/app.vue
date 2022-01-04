@@ -1,7 +1,7 @@
 <template>
 
   <section class="section">
-    <h1 class="shimmer-color">Heartbeat_ATL</h1>
+    <div id="logo" class="shimmer-color"><img src="~/assets/img/heartbeat-logo.png" /></div>
     <img @click="this.observer.observe()" id="heart" class="heart shimmer" src="~/assets/img/heart.png"/>
     <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre> -->
     <pre v-if="error">{{ error.message }}</pre>
@@ -129,9 +129,17 @@ body {
   color: white;
 }
 
+#logo img{
+  width: 100%;
+  padding:0 2rem;
+  height: 12rem;
+  box-sizing: border-box;
+  object-fit: contain;
+  max-width: 50rem;
+}
+
 .section {
   align-items: center;
-  background-color: #EC1C24;
   background-image: url('./assets/img/bg.jpg');
   background-position: bottom;
   background-size: cover;

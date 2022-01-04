@@ -59,7 +59,7 @@
 
         if(fly){
           this.map.fitBounds([
-            this.center, // southwestern corner of the bounds
+            [this.center[0], this.center[1]], // southwestern corner of the bounds
             latlng // northeastern corner of the bounds
           ]);
 
