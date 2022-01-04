@@ -46,7 +46,9 @@
         }
 
         for (var i = this.layers.length - 1; i >= 0; i--) {
-          this.layers[i].remove();
+          console.log(this.layers[i])
+          this.map.removeLayer(this.layers[i]);
+          this.map.removeSource(this.layers[i]);
         }
 
         this.addMarker(this.center)
@@ -75,7 +77,7 @@
         }
       },
       addLine(start, end, id="center-coords"){
-        this.map.addSource('route', {
+        this.map.addSource(String(id), {
           'type': 'geojson',
           'data': {
             'type': 'Feature',
@@ -90,7 +92,7 @@
         var layer = this.map.addLayer({
           'id': String(id),
           'type': 'line',
-          'source': 'route',
+          'source': String(id),
           'layout': {
           'line-join': 'round',
           'line-cap': 'round'
@@ -101,7 +103,7 @@
           }
         });
 
-        this.layers.push(layer)
+        this.layers.push(String(id))
       }
     }
   }

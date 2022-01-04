@@ -2,8 +2,8 @@
 
   <section class="section">
     <div id="logo" class="shimmer-color"><img src="~/assets/img/heartbeat-logo.png" /></div>
-    <div class="">
-      <img @touchend="this.observer.observe()" id="heart" class="heart shimmer" src="~/assets/img/heart.png"/>
+    <div @click="this.observer.observe()"  class="heart-shaped-box">
+      <img id="heart" class="heart shimmer" src="~/assets/img/heart.png"/>
     </div>
     <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre> -->
     <pre v-if="error">{{ error.message }}</pre>
@@ -178,6 +178,7 @@ body {
   object-fit: contain;
   margin: 0 auto;
   transition: ease-in-out 150ms;
+  pointer-events: none;
 }
 
 .shimmer {
