@@ -24,6 +24,7 @@
       return {
         map: null,
         markers: [],
+        layers: [],
         center: [-84.3957530, 33.7550732]
       }
     },
@@ -52,10 +53,14 @@
           this.markers[i].remove();
         }
 
+        for (var i = this.layers.length - 1; i >= 0; i--) {
+          this.layers[i].remove();
+        }
+
         this.addMarker(this.center)
 
         for (var i = users.length - 1; i >= 0; i--){
-          this.addMarker(Object.values(users[i].lnglat), true)
+          this.addMarker(Object.values(users[i].lnglat), users[i].id, true)
         }
 
         if(bounds){
@@ -64,23 +69,20 @@
           });
         }
       },
-      addMarker(lnglat, withLine=false){
+      addMarker(lnglat, id="center-coords", withLine=false){
         var img = document.createElement('img')
+        img.id = id
         img.src = "/_nuxt/assets/img/heart.png"
         img.className = "heart marker shimmer"
 
-        console.log('new marker')
-        console.log(Object.values(lnglat))
-
         var marker = new mapboxgl.Marker({element: img}).setLngLat(lnglat).addTo(this.map)
-
         this.markers.push(marker)
 
         if(withLine){
-          this.addLine(this.center, lnglat)
+          this.addLine(this.center, lnglat, id)
         }
       },
-      addLine(start, end){
+      addLine(start, end, id="center-coords"){
         this.map.addSource('route', {
           'type': 'geojson',
           'data': {
@@ -93,8 +95,8 @@
           }
         });
 
-        this.map.addLayer({
-          'id': 'route',
+        var layer = this.map.addLayer({
+          'id': String(id),
           'type': 'line',
           'source': 'route',
           'layout': {
@@ -106,6 +108,8 @@
           'line-width': 3
           }
         });
+
+        this.layers.push(layer)
       }
     }
   }
