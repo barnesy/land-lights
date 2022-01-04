@@ -1,15 +1,19 @@
 <template>
+
   <section class="section">
-    <h1>Heartbeat_ATL</h1>
-    <img @click="start" class="heart shimmer" src="~/assets/img/heart.png"/>
-    <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre>
-    <pre v-if="error">{{ error.message }}</pre> -->
+    <div id="logo" class="shimmer-color"><img src="~/assets/img/heartbeat-logo.png" /></div>
+    <img @click="this.observer.observe()" id="heart" class="heart shimmer" src="~/assets/img/heart.png"/>
+    <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre> -->
+    <pre v-if="error">{{ error.message }}</pre>
 
     <p class="links">
-      <a href="https://goo.gl/maps/9mYazaiXJWCuJVSW6">@Centenial Yards</a>
-      <a href="https://www.instagram.com/heartbeat_atl">#heartbeatatl</a>
+      <a href="https://goo.gl/maps/9mYazaiXJWCuJVSW6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
     </p>
   </section>
+  <section>
+    <Map ref="map" />
+  </section>
+
 </template>
 
 <script>
@@ -26,54 +30,93 @@ function buildSocketURL(location) {
 }
 
 export default {
-  setup() {
-
-    const position = ref(null)
-    const error = ref(null)
-
-    let socket
-    const startSocket = () => {
-      console.debug(`Opening socket...`)
-      const url = buildSocketURL(window.location)
-      socket = new WebSocket(url)
-      socket.onopen = () => {
-        console.debug(`Socket connected`)
-        const data = { message: 'Hello from client' }
-        socket.send(JSON.stringify(data))
-      }
-      socket.onerror = console.error
-      socket.onclose = () => {
-        console.debug('Socket disconnected')
-      }
-      socket.onmessage = ({ data }) => {
-        data = JSON.parse(data)
-        console.debug(`Socket received:\n${prettify(data)}`)
-        if ('position' in data) {
-          position.value = data.position
+  name: "App",
+  head() {
+    return {
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'my website description'
         }
-      }
+      ]
     }
-    onMounted(startSocket)
+  },
+  data() {
+    return {
+      position: null,
+      error: null,
+      socket: null,
+      observer: null
+    }
+  },
+  methods: {
+    addMarkerToMap(lnglat){
+      console.log(lnglat)
+      this.$refs.map.addMarker(lnglat, true);
+    },
+    update(_position, _error) {
+      console.log('on update')
+      this.position = _position
 
-    const stopSocket = () => socket.close(1001)
-    onUnmounted(stopSocket)
-
-
-    const update = (position, _error) => {
       if (!_error) {
-        position = clonePosition(position) // fix stringify
-        socket.send(JSON.stringify({ position }))
+        console.log(this.position)
+        let position = clonePosition(_position) // fix stringify
+        this.socket.send(JSON.stringify({ position }))
       } else {
         error.value = _error
         console.error(_error)
       }
     }
-    const observer = new GeoObserver(update)
-    const start = () => observer.observe()
-    const stop = () => observer.disconnect()
-    onUnmounted(stop)
+  },
+  created(){
 
-    return { error, position, start }
+  },
+  mounted() {
+    const error = ref(null)
+
+    console.log('parent mounted')
+    console.debug(`Opening socket...`)
+
+    const url = buildSocketURL(window.location)
+    this.socket = new WebSocket(url)
+
+    this.socket.onopen = () => {
+      console.debug(`Socket connected`)
+      const data = { message: 'Hello from client' }
+      this.socket.send(JSON.stringify(data))
+    }
+
+    this.socket.onerror = console.error
+
+    this.socket.onclose = () => {
+      console.debug('Socket disconnected')
+    }
+
+    this.socket.onmessage = ({ data }) => {
+      console.log('on message')
+      data = JSON.parse(data)
+      console.log(data)
+
+      console.debug(`Socket received:\n${prettify(data)}`)
+      if ('position' in data) {
+        this.addMarkerToMap([data.position.coords.longitude, data.position.coords.latitude])
+
+        window.scrollTo(0,document.body.scrollHeight)
+      }
+    }
+
+    this.observer = new GeoObserver(this.update)
+  },
+  unmounted(){
+    console.log('unmounted')
+    this.observer.disconnect()
+    this.socket.close(1001)
+  },
+  setup() {
+    return
   }
 };
 
@@ -82,12 +125,21 @@ export default {
 <style lang="scss">
 
 body {
-  background-color: #cc6f26;
+  background-color: #5D3E6F;
+  color: white;
+}
+
+#logo img{
+  width: 100%;
+  padding:0 2rem;
+  height: 12rem;
+  box-sizing: border-box;
+  object-fit: contain;
+  max-width: 50rem;
 }
 
 .section {
   align-items: center;
-  background-color: #EC1C24;
   background-image: url('./assets/img/bg.jpg');
   background-position: bottom;
   background-size: cover;
@@ -101,6 +153,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 3rem;
+  flex-shrink: 0;
 
   .links {
     display: flex;
@@ -110,6 +163,10 @@ body {
       margin: 0 1rem;
       color: white;
       text-decoration: none;
+
+      img {
+        max-width: 20rem;
+      }
     }
   }
 }
@@ -117,13 +174,10 @@ body {
 .heart {
   cursor: pointer;
   height: 34rem;
-  width: 34rem;
+  width: 100%;
+  object-fit: contain;
   margin: 0 auto;
   transition: ease-in-out 150ms;
-}
-
-.heart:hover {
-  // transform: scale(1.05);
 }
 
 .shimmer {
@@ -132,22 +186,37 @@ body {
   animation: shimmer 2.5s infinite;
 }
 
+.shimmer-color {
+  -webkit-mask:linear-gradient(-60deg,rgb(241, 241, 241) 30%,rgba(40, 60, 236, 0.333),rgb(248, 22, 180) 70%) right/300% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 5s infinite;
+}
+
 @keyframes shimmer {
   100% {-webkit-mask-position:left}
 }
 
 @media (max-width: 800px) {
   h1 {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
+    color: pink;
+    line-height: 2;
+    padding: 0;
+    margin: 0;
+    height: 6rem;
+  }
+
+  a, p, h1 {
+    color: white;
+    border: none;
   }
 
   .heart {
-    height: 28rem;
-    width: 28rem;
+    max-width: 33rem;
   }
 
   .section {
-    min-height: 60rem;
+    min-height: 70rem;
   }
 }
 
