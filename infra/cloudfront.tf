@@ -1,4 +1,7 @@
 resource "aws_cloudfront_distribution" "land_lights" {
+  aliases = [
+    aws_acm_certificate.land_lights.domain_name
+  ]
   default_cache_behavior {
     allowed_methods = [
       "DELETE",
@@ -93,7 +96,9 @@ resource "aws_cloudfront_distribution" "land_lights" {
     }
   }
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn      = aws_acm_certificate.land_lights.arn
+    minimum_protocol_version = "TLSv1.2_2021"
+    ssl_support_method       = "sni-only"
   }
 }
 
