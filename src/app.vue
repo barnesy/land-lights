@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref } from 'vue'
 import { GeoObserver } from './geo-observer.js'
 import { clonePosition }from './clone-position.js'
 import { prettify } from './prettify.js'
@@ -63,27 +62,22 @@ export default {
     updateMap(users, bounds){
       this.$refs.map.updateMarkers(users, bounds)
     },
-    update(_position, _error) {
+    update(position, error) {
       console.log('on update')
-      this.position = _position
 
-      if (!_error) {
-        console.log(this.position)
-        let position = clonePosition(_position) // fix stringify
+      if (!error) {
+        console.log(position)
+        position = clonePosition(position) // fix stringify
+        this.position = position
         this.socket.send(JSON.stringify({ position }))
         this.observer.disconnect()
       } else {
-        error.value = _error
-        console.error(_error)
+        console.error(error)
+        this.error = error
       }
     }
   },
-  created(){
-
-  },
   mounted() {
-    const error = ref(null)
-
     console.log('parent mounted')
     console.debug(`Opening socket...`)
 
@@ -119,9 +113,6 @@ export default {
     console.log('unmounted')
     this.observer.disconnect()
     this.socket.close(1001)
-  },
-  setup() {
-    return
   }
 };
 
