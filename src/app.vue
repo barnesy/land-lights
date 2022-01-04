@@ -9,7 +9,7 @@
     <pre v-if="error">{{ error.message }}</pre>
 
     <p class="links">
-      <a href="https://goo.gl/maps/9mYazaiXJWCuJVSW6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
+      <a href="https://goo.gl/maps/zrixjYeWEGbsYZEZ6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
     </p>
   </section>
   <section>
@@ -171,8 +171,11 @@ body {
   }
 }
 
-.heart {
+.heart-shaped-box {
   cursor: pointer;
+}
+
+.heart {
   height: 34rem;
   width: 100%;
   object-fit: contain;
