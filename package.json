@@ -13,5 +13,8 @@
     "sass": "^1.44.0",
     "sass-loader": "^12.3.0",
     "ws": "^8.3.0"
+  },
+  "dependencies": {
+    "mapbox-gl": "^2.6.1"
   }
 }

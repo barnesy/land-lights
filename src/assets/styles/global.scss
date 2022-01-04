@@ -1,6 +1,14 @@
 @import "./fonts.scss";
 @import "./variables.scss";
 
+html {
+  font-size: 10px;
+}
+
+body {
+  margin: 0;
+}
+
 body, .label {
   font-family: Helvetica, serif;
 }
