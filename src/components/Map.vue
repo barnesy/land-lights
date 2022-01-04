@@ -7,6 +7,7 @@
 
 <script>
   import mapboxgl from 'mapbox-gl'
+  import heartImagePath from "../assets/img/heart.png"
 
   export default {
     name: "Map",
@@ -51,7 +52,7 @@
     methods:{
       addMarker(latlng, fly=false){
         var img = document.createElement('img')
-        img.src = "/_nuxt/assets/img/heart.png"
+        img.src = heartImagePath
         img.className = "heart marker shimmer"
 
         var marker = new mapboxgl.Marker({element: img}).setLngLat(latlng).addTo(this.map)
