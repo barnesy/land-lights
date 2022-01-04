@@ -2,12 +2,14 @@
 
   <section class="section">
     <div id="logo" class="shimmer-color"><img src="~/assets/img/heartbeat-logo.png" /></div>
-    <img @click="this.observer.observe()" id="heart" class="heart shimmer" src="~/assets/img/heart.png"/>
+    <div @click="observe"  class="heart-shaped-box">
+      <img id="heart" :class="{enlarged: isObserving}" class="heart shimmer" src="~/assets/img/heart.png"/>
+    </div>
     <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre> -->
     <pre v-if="error">{{ error.message }}</pre>
 
     <p class="links">
-      <a href="https://goo.gl/maps/9mYazaiXJWCuJVSW6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
+      <a href="https://goo.gl/maps/zrixjYeWEGbsYZEZ6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
     </p>
   </section>
   <section>
@@ -49,13 +51,17 @@ export default {
       position: null,
       error: null,
       socket: null,
-      observer: null
+      observer: null,
+      isObserving: false
     }
   },
   methods: {
-    addMarkerToMap(lnglat){
-      console.log(lnglat)
-      this.$refs.map.addMarker(lnglat, true);
+    observe(){
+      this.observer.observe()
+      this.isObserving = true
+    },
+    updateMap(users, bounds){
+      this.$refs.map.updateMarkers(users, bounds)
     },
     update(_position, _error) {
       console.log('on update')
@@ -65,6 +71,7 @@ export default {
         console.log(this.position)
         let position = clonePosition(_position) // fix stringify
         this.socket.send(JSON.stringify({ position }))
+        this.observer.disconnect()
       } else {
         error.value = _error
         console.error(_error)
@@ -96,13 +103,11 @@ export default {
     }
 
     this.socket.onmessage = ({ data }) => {
-      console.log('on message')
       data = JSON.parse(data)
-      console.log(data)
 
       console.debug(`Socket received:\n${prettify(data)}`)
-      if ('position' in data) {
-        this.addMarkerToMap([data.position.coords.longitude, data.position.coords.latitude])
+      if ('users' in data) {
+        this.updateMap(data.users, data.bounds)
 
         window.scrollTo(0,document.body.scrollHeight)
       }
@@ -171,13 +176,23 @@ body {
   }
 }
 
-.heart {
+.heart-shaped-box {
   cursor: pointer;
+  overflow: hidden;
+}
+
+.heart {
   height: 34rem;
   width: 100%;
   object-fit: contain;
   margin: 0 auto;
   transition: ease-in-out 150ms;
+  pointer-events: none;
+}
+
+.enlarged {
+  transform: scale(1.1);
+  transition: all 400ms cubic-bezier(.47,1.64,.41,.8);
 }
 
 .shimmer {

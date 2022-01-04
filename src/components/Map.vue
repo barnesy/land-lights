@@ -15,17 +15,16 @@
     data () {
       return {
         map: null,
-        markers: null,
+        markers: [],
+        layers: [],
         center: [-84.3957530, 33.7550732]
       }
     },
     mounted(){
-      const bounds = [
+      const maxBounds = [
         [-84.5251117, 33.6035027], // Southwest coordinates
         [-84.2002905, 33.9140176], // Northeast coordinates
       ]
-
-      this.markers = []
 
       this.map = new mapboxgl.Map({
         accessToken: 'pk.eyJ1IjoiaWFtYmFybmVzeSIsImEiOiJja3h5dWY1MnkxZDNoMnhyczBjMWtmYWlpIn0.HdQChTFbneRhxHz3JtGEnw',
@@ -35,32 +34,50 @@
         zoom: 16,
         pitch: 0,
         maxZoom: 17,
-        maxBounds: bounds,
+        // maxBounds: maxBounds,
       })
       this.addMarker(this.center)
       console.log('mounted');
     },
     methods:{
-      addMarker(latlng, fly=false){
+      updateMarkers(users, bounds){
+        for (var i = this.markers.length - 1; i >= 0; i--) {
+          this.markers[i].remove();
+        }
+
+        for (var i = this.layers.length - 1; i >= 0; i--) {
+          console.log(this.layers[i])
+          this.map.removeLayer(this.layers[i]);
+          this.map.removeSource(this.layers[i]);
+        }
+
+        this.addMarker(this.center)
+
+        for (var i = users.length - 1; i >= 0; i--){
+          this.addMarker(Object.values(users[i].lnglat), users[i].id, true)
+        }
+
+        if(bounds){
+          this.map.fitBounds(bounds, {
+            padding: 50
+          });
+        }
+      },
+      addMarker(lnglat, id="center-coords", withLine=false){
         var img = document.createElement('img')
         img.src = heartImagePath
+        img.id = id
         img.className = "heart marker shimmer"
 
-        var marker = new mapboxgl.Marker({element: img}).setLngLat(latlng).addTo(this.map)
+        var marker = new mapboxgl.Marker({element: img}).setLngLat(lnglat).addTo(this.map)
         this.markers.push(marker)
 
-        if(fly){
-          this.map.fitBounds([
-            [this.center[0], this.center[1]], // southwestern corner of the bounds
-            latlng // northeastern corner of the bounds
-          ]);
-
-          this.addLine(this.center, latlng)
+        if(withLine){
+          this.addLine(this.center, lnglat, id)
         }
-        console.log('adding marker')
       },
-      addLine(start, end){
-        this.map.addSource('route', {
+      addLine(start, end, id="center-coords"){
+        this.map.addSource(String(id), {
           'type': 'geojson',
           'data': {
             'type': 'Feature',
@@ -72,10 +89,10 @@
           }
         });
 
-        this.map.addLayer({
-          'id': 'route',
+        var layer = this.map.addLayer({
+          'id': String(id),
           'type': 'line',
-          'source': 'route',
+          'source': String(id),
           'layout': {
           'line-join': 'round',
           'line-cap': 'round'
@@ -85,6 +102,8 @@
           'line-width': 3
           }
         });
+
+        this.layers.push(String(id))
       }
     }
   }
