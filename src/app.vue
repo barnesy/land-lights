@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref } from 'vue'
 import { GeoObserver } from './geo-observer.js'
 import { clonePosition }from './clone-position.js'
 import { prettify } from './prettify.js'
@@ -78,12 +77,7 @@ export default {
       }
     }
   },
-  created(){
-
-  },
   mounted() {
-    const error = ref(null)
-
     console.log('parent mounted')
     console.debug(`Opening socket...`)
 
@@ -119,9 +113,6 @@ export default {
     console.log('unmounted')
     this.observer.disconnect()
     this.socket.close(1001)
-  },
-  setup() {
-    return
   }
 };
 
