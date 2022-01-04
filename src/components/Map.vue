@@ -7,20 +7,11 @@
 
 <script>
   import mapboxgl from 'mapbox-gl'
+  import 'mapbox-gl/dist/mapbox-gl.css'
   import heartImagePath from "../assets/img/heart.png"
 
   export default {
     name: "Map",
-    head() {
-      return {
-        link: [
-          {
-            rel: 'stylesheet',
-            href: 'https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css',
-          }
-        ]
-      }
-    },
     data () {
       return {
         map: null,
