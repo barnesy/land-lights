@@ -121,7 +121,7 @@ export default {
 <style lang="scss">
 
 body {
-  background-color: #5D3E6F;
+  background-color: #330C42;
   color: white;
 }
 
@@ -136,8 +136,8 @@ body {
 
 .section {
   align-items: center;
-  background-image: url('./assets/img/bg.jpg');
-  background-position: bottom;
+  background-image: url('./assets/img/bg.png');
+  background-position: top;
   background-size: cover;
   box-sizing: border-box;
   color: white;
