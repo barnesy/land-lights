@@ -48,6 +48,7 @@ export default async (req, res) => {
         ws.lnglat = [data.position.coords.longitude, data.position.coords.latitude ]
 
         var response = {
+          ...data,
           me: {id: ws.id, lnglat: ws.lnglat},
           users: [],
           bounds: []
