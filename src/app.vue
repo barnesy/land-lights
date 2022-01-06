@@ -9,7 +9,7 @@
 
     <p class="message">
       Tap to control ATL's HEARTBEAT
-      <span class="coords" v-if="position">lng:{{position.longitude}} - lat:{{position.latitude}}</span>
+      <span class="coords" v-if="position">{{position.coords.longitude}}, {{position.coords.latitude}}</span>
       <span class="error" v-if="error">{{ error.message }}</span>
     </p>
 
