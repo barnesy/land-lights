@@ -8,18 +8,17 @@
     <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre> -->
     <pre v-if="error">{{ error.message }}</pre>
 
-    <p class="links">
+    <p class="centennial-yards">
       <a href="https://goo.gl/maps/zrixjYeWEGbsYZEZ6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
     </p>
 
     <p class="contributions">With Contributions from many ATL artists @</p>
     <ul>
       <li>Dash.Studio</li>
-      <li>Protect Awesome</li>
-      <li>Arrrtaddict</li>
-      <li>Holllidaayyy</li>
       <li>Zoo as Zoo</li>
-      <li>WebTime</li>
+      <li>Arrrtaddict</li>
+      <li>Protect Awesome</li>
+      <li>Holllidaayyy</li>
     </ul>
   </section>
   <section>
@@ -161,8 +160,9 @@ body {
   padding: 3rem;
   flex-shrink: 0;
 
-  .links {
+  .centennial-yards {
     display: flex;
+    margin-top: 4rem;
 
     a {
       display: block;
@@ -178,24 +178,29 @@ body {
 }
 
 .contributions {
-  margin-top: 8rem;
-  font-size: 1.3rem;
+  margin-top: 6rem;
+  font-size: 1.4rem;
   letter-spacing: 0.05rem;
+  opacity: 0.7;
+  margin-bottom: 0;
+  max-width: 16rem;
+  line-height: 1.4;
+  text-align: center;
 }
 
 ul {
+  justify-content: space-around;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  color: #8c7599;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   padding: 0;
+  opacity: 0.3;
 
   li {
-    min-width: 8rem;
-    margin: 1rem;
-
-  letter-spacing: 0.05rem;
+    margin:0.6rem 1rem;
+    min-width: 7rem;
+    letter-spacing: 0.05rem;
   }
 }
 
