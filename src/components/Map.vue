@@ -34,7 +34,7 @@
         zoom: 16,
         pitch: 0,
         maxZoom: 17,
-        // maxBounds: maxBounds,
+        maxBounds: maxBounds,
       })
       this.addMarker(this.center)
       console.log('mounted');
@@ -112,9 +112,8 @@
 <style>
   #map {
     background: white;
-    height: 100%;
     width: 100%;
-    min-height: 60rem;
+    min-height: 40rem;
   }
 
   .heart.marker {

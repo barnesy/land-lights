@@ -11,6 +11,16 @@
     <p class="links">
       <a href="https://goo.gl/maps/zrixjYeWEGbsYZEZ6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
     </p>
+
+    <p class="contributions">With Contributions from many ATL artists @</p>
+    <ul>
+      <li>Dash.Studio</li>
+      <li>Protect Awesome</li>
+      <li>Arrrtaddict</li>
+      <li>Holllidaayyy</li>
+      <li>Zoo as Zoo</li>
+      <li>WebTime</li>
+    </ul>
   </section>
   <section>
     <Map ref="map" />
@@ -164,6 +174,28 @@ body {
         max-width: 20rem;
       }
     }
+  }
+}
+
+.contributions {
+  margin-top: 8rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.05rem;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  color: #8c7599;
+  font-size: 1.1rem;
+  padding: 0;
+
+  li {
+    min-width: 8rem;
+    margin: 1rem;
+
+  letter-spacing: 0.05rem;
   }
 }
 
