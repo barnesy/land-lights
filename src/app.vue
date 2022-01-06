@@ -5,8 +5,13 @@
     <div @click="observe"  class="heart-shaped-box">
       <img id="heart" :class="{enlarged: isObserving}" class="heart shimmer" src="~/assets/img/heart.png"/>
     </div>
-    <!-- <pre v-if="position">{{ JSON.stringify(position, null, 2) }}</pre> -->
-    <pre v-if="error">{{ error.message }}</pre>
+
+
+    <p class="message">
+      Tap to control ATL's HEARTBEAT
+      <span class="coords" v-if="position">{{ JSON.stringify(position, null, 2) }}</span>
+      <span class="error" v-if="error">{{ error.message }}</span>
+    </p>
 
     <p class="centennial-yards">
       <a href="https://goo.gl/maps/zrixjYeWEGbsYZEZ6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
@@ -174,6 +179,21 @@ body {
         max-width: 20rem;
       }
     }
+  }
+}
+
+.message {
+  margin-top: -5rem;
+  margin-bottom: 14rem;
+  font-size: 1.2rem;
+  text-align: center;
+  opacity: 0.6;
+  font-weight: bold;
+  max-width: 20rem;
+  line-height: 2rem;
+
+  .error {
+    color: red;
   }
 }
 
