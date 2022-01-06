@@ -63,7 +63,7 @@ resource "aws_cloudfront_distribution" "land_lights" {
       query_string = true
     }
     target_origin_id       = 1
-    viewer_protocol_policy = "redirect-to-https"
+    viewer_protocol_policy = "allow-all"
   }
   origin {
     custom_origin_config {
