@@ -22,8 +22,8 @@
     },
     mounted(){
       const maxBounds = [
-        [-84.5251117, 33.6035027], // Southwest coordinates
-        [-84.2002905, 33.9140176], // Northeast coordinates
+        [-84.4012877, 33.7526813], // Southwest coordinates
+        [-84.3871225, 33.7584805], // Northeast coordinates
       ]
 
       this.map = new mapboxgl.Map({
