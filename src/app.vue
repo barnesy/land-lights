@@ -1,4 +1,7 @@
 <template>
+  <div class="flash" :class="{enlarged: isObserving}">
+
+  </div>
 
   <section class="section">
     <div id="logo" class="shimmer-color"><img src="~/assets/img/heartbeat-logo.png" /></div>
@@ -8,27 +11,36 @@
 
 
     <p class="message">
-      Tap to control ATL's HEARTBEAT
+      [ Tap to connect to ATL's HEARTBEAT ]
       <span class="coords" v-if="position">{{position.coords.longitude}}, {{position.coords.latitude}}</span>
       <span class="error" v-if="error">{{ error.message }}</span>
     </p>
 
     <p class="centennial-yards">
-      <a href="https://goo.gl/maps/zrixjYeWEGbsYZEZ6"><img src="~/assets/img/centennial-yards-logo.png" /></a>
+      <a href="https://goo.gl/maps/zrixjYeWEGbsYZEZ6"><img class="centennial-yards-logo" src="~/assets/img/centennial-yards-logo.png" /></a>
     </p>
 
     <p class="contributions">With Contributions from many ATL artists @</p>
     <ul>
       <li>Dash.Studio</li>
+      <li>*</li>
       <li>Zoo as Zoo</li>
+      <li>*</li>
       <li>Arrrtaddict</li>
+      <li>*</li>
       <li>Protect Awesome</li>
+      <li>*</li>
       <li>Holllidaayyy</li>
     </ul>
   </section>
   <section>
     <Map ref="map" />
   </section>
+
+  <div class="success" :class="{didShare: didShareHeartbeat}">
+    <p>You've shared your heartbeat with Atlanta. Thank you!</p>
+    <a class="reload-button" href="http://heartbeatatl.com">Tap HERE to light up the heartbeat again</a>
+  </div>
 
 </template>
 
@@ -65,13 +77,25 @@ export default {
       error: null,
       socket: null,
       observer: null,
-      isObserving: false
+      isObserving: false,
+      didShareHeartbeat: false
     }
   },
   methods: {
     observe(){
       this.observer.observe()
       this.isObserving = true
+      var audio = new Audio('/assets/sound/heartbeat.mp3')
+      audio.play()
+
+      let duration = 30000
+
+      setTimeout(() => this.isObserving = false , duration)
+      setTimeout(() => this.didShareHeartbeat = true , duration)
+      setTimeout( function() {
+        audio.pause()
+        audio.currentTime = 0
+      }, duration)
     },
     updateMap(users, bounds){
       this.$refs.map.updateMarkers(users, bounds)
@@ -139,10 +163,97 @@ body {
   color: white;
 }
 
+#logo {
+
+}
+
+.flash {
+  background-color: #F3DA5E;
+  animation-name: color;
+  animation-duration: 1s;
+  animation-delay: 0.75s;
+  animation-iteration-count: infinite;
+
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  opacity: 0.0;
+  display: block;
+  pointer-events: none;
+  transition: all 3s ease-out;
+
+  &.enlarged {
+    opacity: 0.7;
+    pointer-events: all;
+  }
+}
+
+@keyframes color {
+  0% {
+    background-color: #F3DA5E;
+  }
+  30% {
+    background-color: #F3DA5E;
+  }
+  40% {
+    background-color: #fff3b6;
+  }
+  55% {
+    background-color: #F3DA5E;
+  }
+  70% {
+    background-color: #fff3b6;
+  }
+  80% {
+    background-color: #F3DA5E;
+  }
+  100% {
+    background-color: #F3DA5E;
+  }
+}
+
+.success{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  text-align: center;
+  font-size: 1.8rem;
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  line-height: 1.4;
+
+  p {
+    padding:1rem 6rem;
+  }
+
+  &.didShare {
+    display: block;
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+a.reload-button {
+  background: linear-gradient(#3B004B, #9F4A32);
+  width: 100%;
+  height: 10rem;
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
 #logo img{
   width: 100%;
   padding:0 2rem;
-  height: 12rem;
+  height: 6rem;
   box-sizing: border-box;
   object-fit: contain;
   max-width: 50rem;
@@ -157,26 +268,24 @@ body {
   color: white;
   display: flex;
   flex-direction: column;
-  min-height: 80rem;
-  padding: 3rem;
   width: 100%;
   justify-content: center;
   align-items: center;
-  padding: 3rem;
+  padding: 3rem 3rem 0.6rem;
   flex-shrink: 0;
 
   .centennial-yards {
     display: flex;
-    margin-top: 4rem;
 
     a {
       display: block;
-      margin: 0 1rem;
+      margin: 0 1rem 0;
       color: white;
       text-decoration: none;
 
       img {
-        max-width: 20rem;
+        max-width: 30rem;
+        margin-bottom: -4rem;
       }
     }
   }
@@ -184,12 +293,12 @@ body {
 
 .message {
   margin-top: -5rem;
-  margin-bottom: 14rem;
+  margin-bottom: 4rem;
   font-size: 1.2rem;
   text-align: center;
   opacity: 0.6;
   font-weight: bold;
-  max-width: 20rem;
+  max-width: 26rem;
   line-height: 2rem;
 
   .error {
@@ -198,42 +307,49 @@ body {
 }
 
 .contributions {
-  margin-top: 6rem;
-  font-size: 1.4rem;
+  margin: 0;
+  font-size: 1rem;
   letter-spacing: 0.05rem;
-  opacity: 0.7;
   margin-bottom: 0;
-  max-width: 16rem;
-  line-height: 1.4;
+  max-width: 24rem;
+  line-height: 1;
   text-align: center;
+  opacity: 0.7;
 }
 
 ul {
-  justify-content: space-around;
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  font-size: 1.3rem;
+  font-size: 1rem;
+  font-weight: bold;
   padding: 0;
-  opacity: 0.3;
+  text-align: center;
+  line-height: .6;
 
   li {
     margin:0.6rem 1rem;
     min-width: 7rem;
     letter-spacing: 0.05rem;
+    display: inline-block;
+  }
+
+  li:nth-child(even){
+    width: 0.5rem;
+    margin: 0;
+    min-width: unset;
   }
 }
 
 .heart-shaped-box {
   cursor: pointer;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .heart {
+  display: block;
   height: 34rem;
   width: 100%;
   object-fit: contain;
-  margin: 0 auto;
+  margin: -7rem auto 0;
   transition: ease-in-out 150ms;
   pointer-events: none;
 }
@@ -276,10 +392,6 @@ ul {
 
   .heart {
     max-width: 33rem;
-  }
-
-  .section {
-    min-height: 70rem;
   }
 }
 
