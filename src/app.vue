@@ -48,6 +48,7 @@
 import { GeoObserver } from './geo-observer.js'
 import { clonePosition }from './clone-position.js'
 import { prettify } from './prettify.js'
+import {Howl, Howler} from 'howler';
 
 function buildSocketURL(location) {
   const url = new URL('/ws', location)
@@ -85,10 +86,17 @@ export default {
     observe(){
       this.observer.observe()
       this.isObserving = true
-      var audio = new Audio('/assets/sound/heartbeat.mp3')
-      audio.play()
-
       let duration = 30000
+
+      var sound = new Howl({
+        src: ['/assets/sound/heartbeat.mp3'],
+        sprite: {
+          beat: [0, duration]
+        }
+      });
+
+      // Shoot the laser!
+      sound.play('beat');
 
       setTimeout(() => this.isObserving = false , duration)
       setTimeout(() => this.didShareHeartbeat = true , duration)
@@ -184,7 +192,7 @@ body {
   transition: all 3s ease-out;
 
   &.enlarged {
-    opacity: 0.7;
+    opacity: 0.9;
     pointer-events: all;
   }
 }
