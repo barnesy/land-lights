@@ -90,13 +90,10 @@ export default {
 
       var sound = new Howl({
         src: ['heartbeat.mp3'],
-        sprite: {
-          beat: [0, duration]
-        }
+        html5: true
       });
 
-      // Shoot the laser!
-      sound.play('beat');
+      sound.play();
 
       setTimeout(() => this.isObserving = false , duration)
       setTimeout(() => this.didShareHeartbeat = true , duration)
@@ -355,7 +352,7 @@ ul {
 
 .heart {
   display: block;
-  height: 34rem;
+  height: 38rem;
   width: 100%;
   object-fit: contain;
   margin: -7rem auto 0;
