@@ -89,17 +89,20 @@ export default {
       let duration = 30000
 
       var sound = new Howl({
-        src: ['heartbeat.mp3'],
-        html5: true
+        src: ['heartbeat.webm', 'heartbeat.mp3', 'heartbeat.wav'],
+        autoplay: true,
+        loop: true,
+        volume: 0.5,
+        onend: function() {
+          console.log('Finished!');
+        }
       });
-
-      sound.play();
 
       setTimeout(() => this.isObserving = false , duration)
       setTimeout(() => this.didShareHeartbeat = true , duration)
       setTimeout( function() {
-        audio.pause()
-        audio.currentTime = 0
+        sound.pause()
+        sound.currentTime = 0
       }, duration)
     },
     updateMap(users, bounds){
