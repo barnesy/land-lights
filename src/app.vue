@@ -310,7 +310,7 @@ a.reload-button {
   margin: 0;
   font-size: 1rem;
   letter-spacing: 0.05rem;
-  margin-bottom: 0;
+  margin-bottom: 2rem;
   max-width: 24rem;
   line-height: 1;
   text-align: center;
@@ -324,6 +324,7 @@ ul {
   padding: 0;
   text-align: center;
   line-height: .6;
+  margin-bottom: 3rem;
 
   li {
     margin:0.6rem 1rem;
