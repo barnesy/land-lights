@@ -89,7 +89,7 @@ export default {
       let duration = 30000
 
       var sound = new Howl({
-        src: ['/assets/sound/heartbeat.mp3'],
+        src: ['heartbeat.mp3'],
         sprite: {
           beat: [0, duration]
         }
