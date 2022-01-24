@@ -1,12 +1,13 @@
 <template>
-  <div class="flash" :class="{enlarged: isObserving}">
+  <div id="flash" class="flash black" :class="{active: this.active}"></div>
+  <!-- <div class="flash yellow" :class="{active: isObserving}"></div> -->
+  <!-- <div class="flash red" :class="{active: isObserving}"></div> -->
 
-  </div>
 
   <section class="section">
     <div id="logo" class="shimmer-color"><img src="~/assets/img/heartbeat-logo.png" /></div>
     <div @click="observe"  class="heart-shaped-box">
-      <img id="heart" :class="{enlarged: isObserving}" class="heart shimmer" src="~/assets/img/heart.png"/>
+      <img id="heart" :class="{enlarged: active}" class="heart shimmer" src="~/assets/img/heart.png"/>
     </div>
 
 
@@ -39,7 +40,7 @@
 
   <div class="success" :class="{didShare: didShareHeartbeat}">
     <p>You've shared your heartbeat with Atlanta. Thank you!</p>
-    <a class="reload-button" href="http://heartbeatatl.com">Tap HERE to light up the heartbeat again</a>
+    <a class="reload-button" href="http://heartbeatatl.com/">Tap HERE to light up the heartbeat again</a>
   </div>
 
 </template>
@@ -81,14 +82,14 @@ export default {
       error: null,
       socket: null,
       observer: null,
-      isObserving: false,
+      active: false,
       didShareHeartbeat: false
     }
   },
   methods: {
     observe(){
       this.observer.observe()
-      this.isObserving = true
+      this.active = true
       let duration = 30000
 
       var sound = new Howl({
@@ -105,7 +106,17 @@ export default {
         }
       });
 
-      setTimeout(() => this.isObserving = false , duration)
+      setTimeout( function() {
+        document.getElementById("flash").classList.remove("black");
+        document.getElementById("flash").classList.add("yellow");
+      }, 2000)
+
+      setTimeout( function() {
+        document.getElementById("flash").classList.remove("yellow");
+        document.getElementById("flash").classList.add("red");
+      }, 5000)
+
+      setTimeout(() => this.active = false , duration)
       setTimeout(() => this.didShareHeartbeat = true , duration)
       setTimeout( function() {
         sound.pause()
@@ -183,48 +194,106 @@ body {
 }
 
 .flash {
-  background-color: #F3DA5E;
-  animation-name: color;
   animation-duration: 1s;
   animation-delay: 0.75s;
   animation-iteration-count: infinite;
-
   position: fixed;
   height: 100%;
   width: 100%;
   z-index: 1;
-  opacity: 0.0;
-  display: block;
   pointer-events: none;
-  transition: all 3s ease-out;
+  transition: opacity, 3s ease-out;
 
-  &.enlarged {
+  opacity: 0;
+  display: block;
+
+  &.active {
     opacity: 0.9;
     pointer-events: all;
   }
 }
 
-@keyframes color {
+.black {
+  animation-name: black;
+}
+
+.yellow {
+  animation-name: yellow;
+}
+
+.red {
+  animation-name: red;
+}
+
+@keyframes black {
   0% {
-    background-color: #F3DA5E;
+    background-color: #000000;
   }
   30% {
-    background-color: #F3DA5E;
+    background-color: #000000;
   }
   40% {
-    background-color: #fff3b6;
+    background-color: #000000;
   }
   55% {
-    background-color: #F3DA5E;
+    background-color: #00000096;
   }
   70% {
-    background-color: #fff3b6;
+    background-color: #000000;
   }
   80% {
-    background-color: #F3DA5E;
+    background-color: #00000096;
   }
   100% {
-    background-color: #F3DA5E;
+    background-color: #000000;
+  }
+}
+
+@keyframes yellow {
+  0% {
+    background-color: #f3da5eb7;
+  }
+  30% {
+    background-color: #f3da5eb7;
+  }
+  40% {
+    background-color: #fff3b6b2;
+  }
+  55% {
+    background-color: #f3da5eb7;
+  }
+  70% {
+    background-color: #fff3b6b2;
+  }
+  80% {
+    background-color: #f3da5eb7;
+  }
+  100% {
+    background-color: #f3da5eb7;
+  }
+}
+
+@keyframes red {
+  0% {
+    background-color: #b60101a1;
+  }
+  30% {
+    background-color: #b60101a1;
+  }
+  40% {
+    background-color: #fd00008e;
+  }
+  55% {
+    background-color: #b60101a1;
+  }
+  70% {
+    background-color: #fd00008e;
+  }
+  80% {
+    background-color: #b60101a1;
+  }
+  100% {
+    background-color: #b60101a1;
   }
 }
 
