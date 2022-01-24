@@ -49,6 +49,9 @@ import { GeoObserver } from './geo-observer.js'
 import { clonePosition }from './clone-position.js'
 import { prettify } from './prettify.js'
 import {Howl, Howler} from 'howler';
+import soundWebmPath from './assets/media/heartbeat.webm'
+import soundMp3Path from './assets/media/heartbeat.mp3'
+import soundWavPath from './assets/media/heartbeat.wav'
 
 function buildSocketURL(location) {
   const url = new URL('/ws', location)
@@ -89,7 +92,11 @@ export default {
       let duration = 30000
 
       var sound = new Howl({
-        src: ['heartbeat.webm', 'heartbeat.mp3', 'heartbeat.wav'],
+        src: [
+          soundWebmPath,
+          soundMp3Path,
+          soundWavPath
+        ],
         autoplay: true,
         loop: true,
         volume: 0.5,
